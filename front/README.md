@@ -14,10 +14,11 @@ Il utilise une architecture modulaire claire, avec `react-router-dom` pour la ge
 
 ### ⚙️  les command pour les install :
 
--npm install
+- npm install
 
--npm install react-router-dom
--npm install --save-dev @types/react-router-dom
+- npm install react-router-dom
+- npm install --save-dev @types/react-router-dom
+- npm install --save-dev @testing-library/jest-dom
 
 ### ⚙️  lancer le projet :
 
@@ -32,14 +33,15 @@ http://localhost:3000
 front/
 ├── public/                 
 ├── src/
+│   ├── __tests__/    
 │   ├── components/         
 │   ├── context/            
 │   ├── pages/              
-│   ├── routes/             
-│   │   └── index.tsx      
+│   ├── routes/                 
 │   ├── services/           
 │   ├── App.tsx            
-│   └── index.tsx         
+│   └── index.tsx 
+│   └── setupTests.ts         
 ├── .gitignore              
 ├── package.json            
 ├── tsconfig.json          
