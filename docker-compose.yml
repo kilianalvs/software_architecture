@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # ===================
+  # FRONTEND - React.js
+  # ===================
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    container_name: frontend-container
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8080
+    networks:
+      - app-network
+
+  # ===================
+  # BACKEND - Spring Boot
+  # ===================
+  backend:
+    build:
+      context: ./notfound
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: backend-container
+    environment:
+      # Utilise H2 en mémoire pour l'instant (pas besoin de PostgreSQL)
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+      - SPRING_H2_CONSOLE_ENABLED=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+    networks:
+      - app-network
+    depends_on:
+      - database
+
+  # ===================
+  # DATABASE - PostgreSQL 
+  # ===================
+  database:
+    image: postgres:15
+    container_name: database-container
+    environment:
+      POSTGRES_DB: parking_db
+      POSTGRES_USER: parking_user
+      POSTGRES_PASSWORD: parking_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  # ===================
+  # MESSAGE BROKER - RabbitMQ (Prêt pour plus tard)
+  # ===================
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: rabbitmq-container
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin123
+  #   ports:
+  #     - "5672:5672"      # AMQP port
+  #     - "15672:15672"    # Management UI
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  # rabbitmq_data:
