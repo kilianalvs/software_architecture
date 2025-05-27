@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  # ===================
+  # FRONTEND - React.js
+  # ===================
   frontend:
     build:
       context: ./front
@@ -8,9 +11,117 @@ services:
     ports:
       - "3000:80"
     container_name: frontend-container
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080/api
     networks:
       - app-network
+    # depends_on:
+    #   - backend
 
+  # ===================
+  # BACKEND - Spring Boot (ADR-003)
+  # ===================
+  # backend:
+  #   build:
+  #     context: ./back
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   container_name: backend-container
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=docker
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/parking_db
+  #     - SPRING_DATASOURCE_USERNAME=parking_user
+  #     - SPRING_DATASOURCE_PASSWORD=parking_pass
+  #     - SPRING_RABBITMQ_HOST=rabbitmq
+  #     - SPRING_RABBITMQ_PORT=5672
+  #     - SPRING_RABBITMQ_USERNAME=guest
+  #     - SPRING_RABBITMQ_PASSWORD=guest
+  #     - JWT_SECRET=your_jwt_secret_key_here
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - database
+  #     - rabbitmq
+
+  # ===================
+  # DATABASE - PostgreSQL
+  # ===================
+  # database:
+  #   image: postgres:15-alpine
+  #   container_name: postgres-container
+  #   environment:
+  #     - POSTGRES_DB=parking_db
+  #     - POSTGRES_USER=parking_user
+  #     - POSTGRES_PASSWORD=parking_pass
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   networks:
+  #     - app-network
+
+  # ===================
+  # MESSAGE BROKER - RabbitMQ (ADR-005)
+  # ===================
+  # rabbitmq:
+  #   image: rabbitmq:3.12-management-alpine
+  #   container_name: rabbitmq-container
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=guest
+  #     - RABBITMQ_DEFAULT_PASS=guest
+  #   ports:
+  #     - "5672:5672"    # AMQP port
+  #     - "15672:15672"  # Management UI
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   networks:
+  #     - app-network
+
+  # ===================
+  # EMAIL SERVICE (pour les confirmations)
+  # ===================
+  # email-service:
+  #   build:
+  #     context: ./email-service
+  #     dockerfile: Dockerfile
+  #   container_name: email-service-container
+  #   environment:
+  #     - SPRING_RABBITMQ_HOST=rabbitmq
+  #     - SPRING_RABBITMQ_PORT=5672
+  #     - SMTP_HOST=your_smtp_host
+  #     - SMTP_PORT=587
+  #     - SMTP_USERNAME=your_email
+  #     - SMTP_PASSWORD=your_password
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - rabbitmq
+
+# ===================
+# VOLUMES
+# ===================
+# volumes:
+#   postgres_data:
+#   rabbitmq_data:
+
+# ===================
+# NETWORKS
+# ===================
 networks:
   app-network:
     driver: bridge
+
+# ===================
+# COMMANDES UTILES
+# ===================
+# docker-compose up                    # Lancer uniquement le frontend pour l'instant
+# docker-compose up --build           # Forcer la reconstruction
+# docker-compose up -d                # En arrière-plan
+# docker-compose logs frontend        # Voir les logs du frontend
+# docker-compose down                 # Arrêter tous les services
+#
+# Une fois les autres services développés, décommentez-les progressivement :
+# 1. Database + Backend
+# 2. RabbitMQ + Email Service
