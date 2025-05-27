@@ -1,64 +1,51 @@
-# Frontend - Application React
+NotFound - Plateforme de Mise en Relation
+Une plateforme moderne de mise en relation entre prestataires et clients, développée avec une architecture hexagonale.
 
-## Lancement avec Docker
+🏗️ Architecture
+Stack Technique
+Frontend: React.js avec TypeScript
+Backend: Spring Boot 3.x avec Java 21
+Base de données: H2 (développement), PostgreSQL (production)
+Containerisation: Docker & Docker Compose
+Architecture: Hexagonale (Ports & Adapters)
+Structure du projet
+notfound/
+├── frontend/                    # Application React
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── Dockerfile
+├── backend/                     # Application Spring Boot
+│   ├── src/main/java/com/esgi/notfound/
+│   │   ├── NotfoundApplication.java
+│   │   ├── exposition/         # Couche exposition (controllers)
+│   │   ├── domain/            # Couche domaine (métier)
+│   │   └── infrastructure/    # Couche infrastructure (adapters)
+│   ├── pom.xml
+│   └── Dockerfile
+├── docker-compose.yml
+└── README.md
 
-### Option 1 : Docker seul
-
+🚀 Démarrage rapide
+Prérequis
+Docker & Docker Compose
+Git
+Installation et lancement
 ```bash
-# Se placer dans le dossier front
-cd front
+# Cloner le projet
+git clone <repository-url>
+cd notfound
 
-# Builder l'image
-docker build -t front-app .
-
-# Lancer le container
-docker run -p 3000:80 front-app
-
-# Ou en arrière-plan
-docker run -d -p 3000:80 --name frontend-container front-app
-```
-
-Option 2 : Docker Compose (Recommandé)
-```bash
-# Se placer à la racine du projet
-cd software_architecture/
-
-# Construire et lancer
-docker-compose up
-
-# Ou en arrière-plan
-docker-compose up -d
-
-# Forcer la reconstruction
+# Lancer l'application complète
 docker-compose up --build
 
-# Arrêter les services
-docker-compose down
+# Ou lancer individuellement
+docker-compose up --build frontend    # Frontend seul
+docker-compose up --build backend     # Backend seul
 ```
 
-Accès à l'application
-Une fois lancée, l'application est accessible sur : http://localhost:3000
-
-Commandes utiles
-```bash
-# Voir les containers en cours
-docker ps
-
-# Voir les logs (Docker seul)
-docker logs <container_id>
-
-# Voir les logs (Docker Compose)
-docker-compose logs frontend
-
-# Arrêter un container (Docker seul)
-docker stop <container_id>
-
-# Supprimer un container
-docker rm <container_id>
-```
-
-TODO
-Ajouter le backend
-Ajouter les autres services
-Configurer les variables d'environnement
-Ajouter la base de données
+Accès aux services
+Service	URL	Description
+Frontend	http://localhost:3000	Interface utilisateur React
+Backend API	http://localhost:8080	API REST Spring Boot
+Health Check	http://localhost:8080/health	Statut du backend
