@@ -1,13 +1,12 @@
 NotFound - Plateforme de Mise en Relation
-Une plateforme moderne de mise en relation entre prestataires et clients, développée avec une architecture hexagonale.
+Une plateforme moderne de mise en relation entre prestataires et clients.
 
-🏗️ Architecture
+Architecture
 Stack Technique
-Frontend: React.js avec TypeScript
-Backend: Spring Boot 3.x avec Java 21
-Base de données: H2 (développement), PostgreSQL (production)
+Frontend: React.js
+Backend: Spring Boot 3.x avec Java 17
+Base de donnees: H2 (en memoire)
 Containerisation: Docker & Docker Compose
-Architecture: Hexagonale (Ports & Adapters)
 Structure du projet
 notfound/
 ├── frontend/                    # Application React
@@ -15,28 +14,26 @@ notfound/
 │   ├── public/
 │   ├── package.json
 │   └── Dockerfile
-├── backend/                     # Application Spring Boot
+├── backend/                     # Application Spring Boot  
 │   ├── src/main/java/com/esgi/notfound/
 │   │   ├── NotfoundApplication.java
-│   │   ├── exposition/         # Couche exposition (controllers)
-│   │   ├── domain/            # Couche domaine (métier)
-│   │   └── infrastructure/    # Couche infrastructure (adapters)
+│   │   └── exposition/
+│   │       └── controllers/
 │   ├── pom.xml
 │   └── Dockerfile
 ├── docker-compose.yml
 └── README.md
 
-🚀 Démarrage rapide
-Prérequis
+Demarrage
+Prerequis
 Docker & Docker Compose
-Git
 Installation et lancement
-```bash
 # Cloner le projet
-git clone <repository-url>
-cd notfound
+```bash
+git clone https://github.com/kilianalvs/software_architecture.git
+cd software_architecture
 
-# Lancer l'application complète
+# Lancer l'application complete
 docker-compose up --build
 
 # Ou lancer individuellement
@@ -44,8 +41,40 @@ docker-compose up --build frontend    # Frontend seul
 docker-compose up --build backend     # Backend seul
 ```
 
-Accès aux services
+Acces aux services
 Service	URL	Description
 Frontend	http://localhost:3000	Interface utilisateur React
 Backend API	http://localhost:8080	API REST Spring Boot
 Health Check	http://localhost:8080/health	Statut du backend
+Base H2	http://localhost:8080/h2-console	Console base de donnees
+Configuration H2 Console
+JDBC URL: jdbc:h2:mem:testdb
+Username: sa
+Password: (vide)
+Commandes utiles
+```bash
+# Voir les logs
+docker-compose logs frontend
+docker-compose logs backend
+
+# Rebuild sans cache
+docker-compose build --no-cache
+
+# Arreter tous les services
+docker-compose down
+
+Troubleshooting
+Le backend ne demarre pas
+# Verifier les logs
+docker-compose logs backend
+
+# Rebuild complet
+docker-compose down
+docker-compose build --no-cache backend
+docker-compose up backend
+```
+Verifications
+Backend repond : http://localhost:8080/health
+Frontend accessible : http://localhost:3000
+Base H2 accessible : http://localhost:8080/h2-console
+Status: Frontend operationnel | Backend operationnel | Base H2 operationnelle
