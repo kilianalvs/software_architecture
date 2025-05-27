@@ -1,13 +1,16 @@
-NotFound - Plateforme de Mise en Relation
-Une plateforme moderne de mise en relation entre prestataires et clients.
+Software architecture
 
-Architecture
-Stack Technique
+# Architecture
+
+## Stack Technique
+
 Frontend: React.js
 Backend: Spring Boot 3.x avec Java 17
 Base de donnees: H2 (en memoire)
 Containerisation: Docker & Docker Compose
-Structure du projet
+
+## Structure du projet
+
 notfound/
 ├── frontend/                    # Application React
 │   ├── src/
