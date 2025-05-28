@@ -10,7 +10,7 @@ Base de donnees: H2 (en memoire)
 Containerisation: Docker & Docker Compose
 
 ## Structure du projet
-
+```bash
 notfound/
 ├── frontend/                    # Application React
 │   ├── src/
@@ -26,7 +26,7 @@ notfound/
 │   └── Dockerfile
 ├── docker-compose.yml
 └── README.md
-
+```
 Demarrage
 Prerequis
 Docker & Docker Compose
