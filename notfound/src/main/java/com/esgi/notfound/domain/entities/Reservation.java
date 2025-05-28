@@ -74,13 +74,67 @@ public class Reservation {
     }
     
     // Getters complets
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Vehicle getVehicle() { return vehicle; }
-    public ParkingSpot getParkingSpot() { return parkingSpot; }
-    public LocalDate getStartDate() { return startDate; }
-    public LocalDate getEndDate() { return endDate; }
-    public ReservationStatus getStatus() { return status; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getCheckedInAt() { return checkedInAt; }
+     public Long getId() { 
+        return id; 
+    }
+    
+    public void setId(Long id) { 
+        this.id = id; 
+    }
+    
+    public Vehicle getVehicle() { 
+        return vehicle; 
+    }
+    
+    public void setVehicle(Vehicle vehicle) { 
+        this.vehicle = vehicle; 
+    }
+    
+    public ParkingSpot getParkingSpot() { 
+        return parkingSpot; 
+    }
+    
+    public void setParkingSpot(ParkingSpot parkingSpot) { 
+        this.parkingSpot = parkingSpot; 
+    }
+    
+    public LocalDate getStartDate() { 
+        return startDate; 
+    }
+    
+    public void setStartDate(LocalDate startDate) { 
+        this.startDate = startDate; 
+    }
+    
+    public LocalDate getEndDate() { 
+        return endDate; 
+    }
+    
+    public void setEndDate(LocalDate endDate) { 
+        this.endDate = endDate; 
+    }
+    
+    public ReservationStatus getStatus() { 
+        return status; 
+    }
+    
+    public void setStatus(ReservationStatus status) { 
+        this.status = status; 
+    }
+    
+    public LocalDateTime getCreatedAt() { 
+        return createdAt; 
+    }
+    
+    public void setCreatedAt(LocalDateTime createdAt) { 
+        this.createdAt = createdAt; 
+    }
+    
+    public LocalDateTime getCheckedInAt() { 
+        return checkedInAt; 
+    }
+    
+    public void setCheckedInAt(LocalDateTime checkedInAt) { 
+        this.checkedInAt = checkedInAt; 
+    }
 }
