@@ -11,6 +11,7 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
+    "axios": "^1.9.0",
     "classnames": "^2.5.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/react-router-dom": "^5.3.3"
   }
 }
