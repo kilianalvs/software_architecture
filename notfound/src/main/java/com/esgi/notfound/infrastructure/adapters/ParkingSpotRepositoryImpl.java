@@ -5,6 +5,7 @@ import com.esgi.notfound.domain.enums.ParkingSpotType;
 import com.esgi.notfound.domain.ports.ParkingSpotRepository;
 import com.esgi.notfound.infrastructure.entities.ParkingSpotEntity;
 import com.esgi.notfound.infrastructure.repositories.JpaParkingSpotRepository;
+
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;

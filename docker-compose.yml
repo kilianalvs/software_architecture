@@ -27,15 +27,15 @@ services:
       - "8080:8080"
     container_name: backend-container
     environment:
-      # Utilise H2 en mémoire pour l'instant (pas besoin de PostgreSQL)
+      # Configuration PostgreSQL pour Docker
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
-      - SPRING_H2_CONSOLE_ENABLED=true
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/notfound_parking
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_USERNAME=notfound_user
+      - SPRING_DATASOURCE_PASSWORD=notfound_password
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
     networks:
       - app-network
     depends_on:
@@ -44,37 +44,19 @@ services:
   # ===================
   # DATABASE - PostgreSQL 
   # ===================
-  database:
+  database:  # ✅ Maintenant bien indenté !
     image: postgres:15
     container_name: database-container
     environment:
-      POSTGRES_DB: parking_db
-      POSTGRES_USER: parking_user
-      POSTGRES_PASSWORD: parking_pass
+      POSTGRES_DB: notfound_parking
+      POSTGRES_USER: notfound_user
+      POSTGRES_PASSWORD: notfound_password
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
-
-  # ===================
-  # MESSAGE BROKER - RabbitMQ (Prêt pour plus tard)
-  # ===================
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq-container
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: admin
-  #     RABBITMQ_DEFAULT_PASS: admin123
-  #   ports:
-  #     - "5672:5672"      # AMQP port
-  #     - "15672:15672"    # Management UI
-  #   volumes:
-  #     - rabbitmq_data:/var/lib/rabbitmq
-  #   networks:
-  #     - app-network
 
 networks:
   app-network:
@@ -82,4 +64,3 @@ networks:
 
 volumes:
   postgres_data:
-  # rabbitmq_data:

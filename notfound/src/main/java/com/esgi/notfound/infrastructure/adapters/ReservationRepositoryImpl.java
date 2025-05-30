@@ -6,8 +6,9 @@ import com.esgi.notfound.domain.entities.Vehicle;
 import com.esgi.notfound.domain.ports.ReservationRepository;
 import com.esgi.notfound.infrastructure.entities.ParkingSpotEntity;
 import com.esgi.notfound.infrastructure.entities.ReservationEntity;
-import com.esgi.notfound.infrastructure.repositories.JpaReservationRepository;
 import com.esgi.notfound.infrastructure.repositories.JpaParkingSpotRepository;
+import com.esgi.notfound.infrastructure.repositories.JpaReservationRepository;
+
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
