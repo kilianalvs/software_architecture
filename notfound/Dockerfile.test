@@ -1,0 +1,34 @@
+# notfound/Dockerfile.test - JAVA 21 GARANTI
+FROM eclipse-temurin:21-jdk
+
+# Installer Maven manuellement pour être sûr
+ARG MAVEN_VERSION=3.9.6
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    | tar xzf - -C /opt && \
+    ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven && \
+    rm -rf /var/lib/apt/lists/*
+
+# Variables d'environnement Maven
+ENV M2_HOME=/opt/maven
+ENV MAVEN_HOME=/opt/maven
+ENV PATH=${M2_HOME}/bin:${PATH}
+
+WORKDIR /app
+
+# ✅ Vérification des versions (cette fois ça sera Java 21)
+RUN echo "🔧 Versions installées:" && \
+    java --version && \
+    echo "" && \
+    mvn --version
+
+# Copier pom.xml et installer les dépendances
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copier tout le code
+COPY . .
+
+# Commande de test
+CMD ["mvn", "test", "-Dmaven.test.failure.ignore=false"]

@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   # ===================
@@ -42,6 +42,34 @@ services:
       - app-network
     depends_on:
       - database
+  
+  backend-tests:
+    build:
+      context: ./notfound
+      dockerfile: Dockerfile.test
+    container_name: backend-tests-container
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+      - SPRING_H2_CONSOLE_ENABLED=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - MAVEN_OPTS=-Xmx1024m
+    volumes:
+      - maven-cache:/root/.m2
+      # 🔄 Remonte le code source pour voir les modifications
+      - ./notfound/src:/app/src:ro  # read-only pour éviter corruption
+      - ./notfound/pom.xml:/app/pom.xml:ro
+    command: ["mvn", "test", "-Dmaven.test.failure.ignore=false"]
+    profiles:
+      - test
+    networks:
+      - app-network
+
+
 
   # ===================
   # DATABASE - PostgreSQL 
