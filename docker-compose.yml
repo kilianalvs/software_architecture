@@ -8,6 +8,8 @@ services:
     build:
       context: ./front
       dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=false"
     ports:
       - "3000:80"
     container_name: frontend-container

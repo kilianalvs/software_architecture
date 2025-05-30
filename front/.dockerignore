@@ -2,5 +2,9 @@ node_modules
 npm-debug.log
 build
 .git
-*.md
 .gitignore
+README.md
+.env
+.nyc_output
+coverage
+.DS_Store
