@@ -11,6 +11,11 @@ spring:
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.H2Dialect}
     show-sql: true
   
+  # 🎯 DÉSACTIVER l'initialisation automatique
+  sql:
+    init:
+      mode: never
+  
   h2:
     console:
       enabled: ${SPRING_H2_CONSOLE_ENABLED:true}
