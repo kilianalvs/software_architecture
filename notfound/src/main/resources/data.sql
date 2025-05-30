@@ -1,4 +1,5 @@
 -- Initialisation des 60 places de parking (6 rangées x 10 places)
+-- ne sert plus a rien en l'etat, bdd gérée par config/DatabaseConfig.java
 -- Rangées A et B : places standards
 INSERT INTO parking_spots (spot_number, spot_type, row_name, position_in_row, is_available, has_electric_charging) VALUES
 
