@@ -1,6 +1,8 @@
 package com.esgi.notfound.domain.entities;
 
 import com.esgi.notfound.domain.enums.ReservationStatus;
+import jakarta.persistence.Entity;
+
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

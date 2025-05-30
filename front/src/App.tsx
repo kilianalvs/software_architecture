@@ -1,16 +1,14 @@
 import React from 'react';
 import './App.css';
+import ReservationPage from './pages/ReservationPage';
 
-function App() {
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Hello
-        </p>
-      </header>
-    </div>
-  );
+    <>
+      <ReservationPage />
+    </>
+  )
 }
 
 export default App;
