@@ -82,36 +82,38 @@ Frontend accessible : http://localhost:3000
 Base H2 accessible : http://localhost:8080/h2-console
 Status: Frontend operationnel | Backend operationnel | Base H2 operationnelle
 
-# lancer les test en back :
+🔥 Tests Backend
+# 🎯 Tests normaux
+docker-compose --profile test up backend-tests --build
 
+# 🔄 En cas de problème - Rebuild forcé
+docker-compose --profile test up backend-tests --build --force-recreate
 
-1️⃣ LANCER LES TESTS NORMALEMENT
-# Tests seuls
-docker-compose run --rm backend-tests
-
-# Tests avec Maven explicite
-docker-compose run --rm backend-tests mvn test
-
-# Tests avec compilation
-docker-compose run --rm backend-tests mvn clean test
-
-en cas de pb :
-2️⃣ FORCER LE REBUILD COMPLET
-# Rebuild l'image Docker + tests
-docker-compose build backend-tests
-docker-compose run --rm backend-tests mvn clean test
-
-# OU en une seule commande
-docker-compose build backend-tests && docker-compose run --rm backend-tests mvn clean test
-
-3️⃣ REBUILD TOTAL (cache Docker + Maven)
-# Supprimer tout et rebuild
-docker-compose down
+# 🆘 Rebuild complet (cache + volumes)
+docker-compose down -v
 docker-compose build --no-cache backend-tests
-docker-compose run --rm backend-tests mvn clean compile test
+docker-compose --profile test up backend-tests
 
-# Supprimer les volumes aussi
+⚛️ Tests Frontend
+# 🎯 Tests normaux
+docker-compose --profile test up frontend-tests --build
+
+# 🔄 En cas de problème - Rebuild forcé
+docker-compose --profile test up frontend-tests --build --force-recreate
+
+# 🆘 Rebuild complet (cache + volumes)
+docker-compose down -v
+docker-compose build --no-cache frontend-tests
+docker-compose --profile test up frontend-tests
+
+🚀 Tests Complets
+# 🎯 Tous les tests (Backend + Frontend)
+docker-compose --profile test up --build
+
+# 🔄 En cas de problème - Rebuild forcé
+docker-compose --profile test up --build --force-recreate
+
+# 🆘 Cleanup total avant tests
 docker-compose down -v
 docker system prune -f
-docker-compose build --no-cache backend-tests
-docker-compose run --rm backend-tests mvn clean test
+docker-compose --profile test up --build

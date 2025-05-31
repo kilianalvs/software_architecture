@@ -55,6 +55,31 @@ services:
       database:
         condition: service_started
 
+
+  frontend-tests:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.test
+    container_name: frontend-tests
+    profiles:
+      - test
+    volumes:
+      - ./front/src:/app/src:ro
+      - ./front/test-results:/app/coverage
+    environment:
+      - CI=true
+      - NODE_ENV=test
+    networks:
+      - app-network
+    command: >
+      sh -c "
+        echo '🚀 Démarrage tests...' &&
+        npm test -- --watchAll=false --verbose --passWithNoTests
+      "
+
+
+
+
   database:
     image: postgres:15
     container_name: database-container

@@ -1,0 +1,19 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copier les fichiers de config
+COPY package*.json ./
+
+# Installer TOUTES les dépendances (dev incluses)
+RUN npm ci
+
+# Copier le code source
+COPY . .
+
+# Variables d'environnement pour les tests
+ENV CI=true
+ENV NODE_ENV=test
+
+# Commande par défaut avec options de debug
+CMD ["npm", "test", "--", "--watchAll=false", "--coverage", "--verbose", "--passWithNoTests"]
