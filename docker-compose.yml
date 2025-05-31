@@ -1,9 +1,4 @@
-# version: '3.8'
-
 services:
-  # ===================
-  # FRONTEND - React.js
-  # ===================
   frontend:
     build:
       context: ./front
@@ -18,9 +13,6 @@ services:
     networks:
       - app-network
 
-  # ===================
-  # BACKEND - Spring Boot
-  # ===================
   backend:
     build:
       context: ./notfound
@@ -29,19 +21,12 @@ services:
       - "8080:8080"
     container_name: backend-container
     environment:
-      # Utilise H2 en mémoire pour l'instant (pas besoin de PostgreSQL)
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
-      - SPRING_H2_CONSOLE_ENABLED=true
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
     networks:
       - app-network
     depends_on:
-      - database
+      database:
+        condition: service_started
   
   backend-tests:
     build:
@@ -50,30 +35,26 @@ services:
     container_name: backend-tests-container
     environment:
       - SPRING_PROFILES_ACTIVE=test
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
-      - SPRING_H2_CONSOLE_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/parking_db
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_USERNAME=parking_user
+      - SPRING_DATASOURCE_PASSWORD=parking_pass
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - MAVEN_OPTS=-Xmx1024m
     volumes:
       - maven-cache:/root/.m2
-      # 🔄 Remonte le code source pour voir les modifications
-      - ./notfound/src:/app/src:ro  # read-only pour éviter corruption
+      - ./notfound/src:/app/src:ro
       - ./notfound/pom.xml:/app/pom.xml:ro
     command: ["mvn", "test", "-Dmaven.test.failure.ignore=false"]
     profiles:
       - test
     networks:
       - app-network
+    depends_on:
+      database:
+        condition: service_started
 
-
-
-  # ===================
-  # DATABASE - PostgreSQL 
-  # ===================
   database:
     image: postgres:15
     container_name: database-container
@@ -89,27 +70,10 @@ services:
     networks:
       - app-network
 
-  # ===================
-  # MESSAGE BROKER - RabbitMQ (Prêt pour plus tard)
-  # ===================
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq-container
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: admin
-  #     RABBITMQ_DEFAULT_PASS: admin123
-  #   ports:
-  #     - "5672:5672"      # AMQP port
-  #     - "15672:15672"    # Management UI
-  #   volumes:
-  #     - rabbitmq_data:/var/lib/rabbitmq
-  #   networks:
-  #     - app-network
-
 networks:
   app-network:
     driver: bridge
 
 volumes:
   postgres_data:
-  # rabbitmq_data:
+  maven-cache:
