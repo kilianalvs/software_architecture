@@ -9,8 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Configuration
 public class DatabaseConfig {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public DatabaseConfig(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Bean
     public ApplicationRunner dataLoader() {

@@ -1,7 +1,7 @@
 package com.esgi.notfound.exposition.controllers;
 
 import com.esgi.notfound.domain.entities.Reservation;
-import com.esgi.notfound.domain.services.ReservationService;
+import com.esgi.notfound.application.ReservationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +17,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    // Créer une réservation (déjà présent)
     @PostMapping
     public Reservation createReservation(
             @RequestParam String matricule,

@@ -1,9 +1,8 @@
-package com.esgi.notfound.application.service;
+package com.esgi.notfound.application;
 
 import com.esgi.notfound.domain.enums.ParkingSpotType;
-import com.esgi.notfound.domain.repositories.ParkingSpotRepository;
+import com.esgi.notfound.infrastructure.repositories.ParkingSpotRepository;
 import com.esgi.notfound.infrastructure.entities.ParkingSpotEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,7 @@ public class ParkingSpotService {
 
     private final ParkingSpotRepository parkingSpotRepository;
 
-    @Autowired
+
     public ParkingSpotService(ParkingSpotRepository parkingSpotRepository) {
         this.parkingSpotRepository = parkingSpotRepository;
     }

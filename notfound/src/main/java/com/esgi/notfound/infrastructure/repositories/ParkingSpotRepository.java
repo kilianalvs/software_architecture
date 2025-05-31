@@ -1,4 +1,4 @@
-package com.esgi.notfound.domain.repositories;
+package com.esgi.notfound.infrastructure.repositories;
 
 import com.esgi.notfound.domain.enums.ParkingSpotType;
 import com.esgi.notfound.infrastructure.entities.ParkingSpotEntity;

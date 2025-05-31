@@ -1,4 +1,4 @@
-package com.esgi.notfound.domain.services;
+package com.esgi.notfound.application;
 
 import com.esgi.notfound.domain.entities.ParkingSpot;
 import com.esgi.notfound.domain.entities.Reservation;

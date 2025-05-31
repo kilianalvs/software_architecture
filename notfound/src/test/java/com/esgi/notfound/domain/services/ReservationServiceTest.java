@@ -2,6 +2,7 @@
 
 package com.esgi.notfound.domain.services;
 
+import com.esgi.notfound.application.ReservationService;
 import com.esgi.notfound.domain.entities.ParkingSpot;
 import com.esgi.notfound.domain.entities.Reservation;
 import com.esgi.notfound.domain.entities.Vehicle;

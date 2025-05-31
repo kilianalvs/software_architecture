@@ -1,7 +1,7 @@
 package com.esgi.notfound.exposition.controllers;
 
 import com.esgi.notfound.domain.entities.ParkingSpot;
-import com.esgi.notfound.domain.services.ParkingService;
+import com.esgi.notfound.application.ParkingService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 

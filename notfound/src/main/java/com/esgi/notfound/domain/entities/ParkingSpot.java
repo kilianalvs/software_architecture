@@ -36,7 +36,7 @@ public class ParkingSpot {
         return type == ParkingSpotType.ELECTRIC_CHARGING;
     }
     
-    // Getters et setters complets
+    // Getters et setters
     public Long getId() { 
         return id; 
     }
