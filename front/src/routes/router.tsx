@@ -1,13 +1,27 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import App from "../App";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginPage from '../pages/LoginPage';
+import { ReservationForm } from '../components/ReservationForm';
+import Header from '../components/Header';
+import SecretaryParkingPage from '../pages/dashboardSecretaire';
+import PrivateRoute from './privateRoute';
 
 const AppRouter = () => {
   return (
-    <Router>
+    <BrowserRouter>
+      <Header />
       <Routes>
-        <Route path="*" element={<App />} />
+        <Route path="/" element={<ReservationForm />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/secretaire"
+          element={
+            <PrivateRoute>
+              <SecretaryParkingPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 

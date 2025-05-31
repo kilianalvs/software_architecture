@@ -8,9 +8,9 @@ import { getAvailableSpots } from '../service/parkingService';
 
 export const ReservationForm = () => {
   const [matricule, setMatricule] = useState('');
-  const [dates, setDates] = useState<Date[] | null>(null);
-  const [selectedSpot, setSelectedSpot] = useState<string | null>(null);
-  const [availableSpots, setAvailableSpots] = useState<string[]>([]);
+  const [date, setDate] = useState<Date | null>(null);
+  const [availableSpots, setAvailableSpots] = useState<any[]>([]);
+  const [selectedSpot, setSelectedSpot] = useState<any | null>(null);
 
   const today = new Date();
   const maxDate = new Date();
@@ -22,45 +22,41 @@ export const ReservationForm = () => {
   }
 
   useEffect(() => {
-
     const fetchAvailable = async () => {
-
-      if (dates && dates.length === 2 && dates[0] && dates[1]) {
-        const start = dates[0].toISOString().split('T')[0];
-        const end = dates[1].toISOString().split('T')[0];
+      if (date) {
+        const formatted = date.toISOString().split('T')[0];
         try {
-          const spots = await getAvailableSpots(start, end, false); 
-          setAvailableSpots(spots.filter((s: any) => s.available).map((s: any) => s.number));
-
+          const spots = await getAvailableSpots(formatted, formatted, false);
+          setAvailableSpots(spots.filter((s: any) => s.available));
         } catch (err) {
           console.error('Erreur lors du chargement des places disponibles', err);
         }
       }
     };
-
     fetchAvailable();
-  }, [dates]);
+  }, [date]);
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!dates || dates.length !== 2 || !dates[0] || !dates[1] || !matricule || !selectedSpot) {
+    if (!date || !matricule || !selectedSpot) {
       alert("Veuillez remplir tous les champs et sélectionner une place");
       return;
     }
 
-    const start = dates[0].toISOString().split('T')[0];
-    const end = dates[1].toISOString().split('T')[0];
-    const parkingSpotId = selectedSpot; // string, sera géré côté back
+    const formatted = date.toISOString().split('T')[0];
 
     try {
-      const result = await submitReservation(matricule, parkingSpotId, start, end);
+      const result = await submitReservation(matricule, selectedSpot.id, formatted, formatted);
       alert('Réservation confirmée');
       console.log(result);
-    } catch (error) {
-      alert("Erreur lors de la réservation");
-      console.error(error);
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || "Erreur lors de la réservation";
+      alert(errorMessage);
+      console.error(errorMessage);
     }
   };
+
 
   return (
     <div
@@ -92,18 +88,13 @@ export const ReservationForm = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="dates" className="block mb-2 text-xl">
-              <b>La date</b>
+            <label htmlFor="date" className="block mb-2 text-xl">
+              <b>Date</b>
             </label>
             <Calendar
-              id="dates"
-              value={dates}
-              onChange={(e) => {
-                const value = e.value as Date[];
-                if (value?.length > 5) return;
-                setDates(value);
-              }}
-              selectionMode="range"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.value as Date)}
               readOnlyInput
               minDate={today}
               maxDate={maxDate}
@@ -118,18 +109,22 @@ export const ReservationForm = () => {
             <div className="mb-4 mt-4">
               <label className="block mb-2 text-xl"><b>Choisissez une place</b></label>
               <ParkingGrid
-                selected={selectedSpot}
-                onSelect={setSelectedSpot}
-                availableSpots={availableSpots}
+                selected={selectedSpot?.number}
+                onSelect={(num) => {
+                  const fullSpot = availableSpots.find(s => s.number === num);
+                  setSelectedSpot(fullSpot || null);
+                }}
+                availableSpots={availableSpots.map((s) => s.number)}
               />
             </div>
           )}
         </div>
+
         <Button
           type="submit"
           label="Envoyer"
           className="w-full p-button-lg"
-          disabled={!matricule || !dates || dates.length !== 2 || !selectedSpot}
+          disabled={!matricule || !date || !selectedSpot}
         />
       </form>
     </div>

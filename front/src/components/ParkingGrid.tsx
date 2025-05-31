@@ -7,9 +7,12 @@ type ParkingGridProps = {
 };
 
 const rows = ['A', 'B', 'C', 'D', 'E', 'F'];
-const cols = Array.from({ length: 10 }, (_, i) => String(i + 1).padStart(2, '0'));
+
+const cols = Array.from({ length: 10 }, (_, i) => String(i + 1));
 
 const ParkingGrid: React.FC<ParkingGridProps> = ({ selected, onSelect, availableSpots }) => {
+  
+  const eclat = "/eclat.png";
 
   return (
     <div
@@ -25,6 +28,7 @@ const ParkingGrid: React.FC<ParkingGridProps> = ({ selected, onSelect, available
           const spotId = `${row}${col}`;
           const isAvailable = availableSpots.includes(spotId);
           const isSelected = selected === spotId;
+          const isElectricRow = row === 'A' || row === 'F';
 
           return (
             <button
@@ -33,6 +37,7 @@ const ParkingGrid: React.FC<ParkingGridProps> = ({ selected, onSelect, available
               disabled={!isAvailable}
               onClick={() => onSelect(spotId)}
               style={{
+                position: 'relative',
                 padding: '0.5rem',
                 fontWeight: 'bold',
                 backgroundColor: isSelected ? '#0d6efd' : isAvailable ? '#d1e7dd' : '#f8d7da',
@@ -43,6 +48,19 @@ const ParkingGrid: React.FC<ParkingGridProps> = ({ selected, onSelect, available
               }}
             >
               {spotId}
+              {isElectricRow && (
+                <img
+                  src={eclat}
+                  alt="Voiture électrique"
+                  style={{
+                    position: 'absolute',
+                    bottom: '4px',
+                    right: '4px',
+                    width: '16px',
+                    height: '16px',
+                  }}
+                />
+              )}
             </button>
           );
         })

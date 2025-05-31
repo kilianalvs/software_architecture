@@ -4,7 +4,7 @@ import { config } from '../config';
 
 export const createReservation = async (
   matricule: string,
-  parkingSpotId:string,
+  parkingSpotId:number,
   startDate: string,
   endDate: string
 ) => {

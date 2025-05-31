@@ -1,14 +1,9 @@
 import React from 'react';
 import './App.css';
-import ReservationPage from './pages/ReservationPage';
+import AppRouter from './routes/router';
 
-const App = () => {
-
-  return (
-    <>
-      <ReservationPage />
-    </>
-  )
-}
+const App: React.FC = () => {
+  return <AppRouter />;
+};
 
 export default App;
